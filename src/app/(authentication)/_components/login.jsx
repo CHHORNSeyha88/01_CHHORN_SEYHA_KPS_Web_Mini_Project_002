@@ -42,12 +42,9 @@ export default function LoginComponent() {
       if (res?.ok) {
         router.push("/todopage");
       } else {
-        console.error("Google login response:", res); // Log response for debugging
-        alert("Google login failed. Please try again.");
       }
     } catch (error) {
-      console.error("Google login error:", error); // Log the error for debugging
-      alert("An error occurred during Google login.");
+      console.error("Google login error:", error); 
     } finally {
       setIsLoading(false);
     }
