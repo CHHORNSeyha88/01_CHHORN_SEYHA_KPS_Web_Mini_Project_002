@@ -1,19 +1,16 @@
 import { loginService } from "@/service/auth/login.service";
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
+import Google from "next-auth/providers/google";
+import { signOut } from "next-auth/react";
 
 export const authOption = {
   providers: [
+    
     CredentialsProvider({
       name: "Credentials",
       
-		  // credentials: {b
-      //  username: { label: "Username", type: "text", placeholder: "jsmith" },
-      //  password: { label: "Password", type: "password" },
-      // },
-      
       async authorize(data) {
-        // console.log("authorize :", data);
         const userData = {
           email: data?.email,
           password: data?.password,
@@ -26,10 +23,15 @@ export const authOption = {
         return payload;
       },
     }),
+    Google({
+      clientId: process.env.AUTH_GOOGLE_ID,
+      clientSecret: process.env.AUTH_GOOGLE_SECRET,
+      authorizationUrl: "https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&prompt=consent", // Optional, add custom params if needed
+     
+    }),
     
   ],
   
-  // Optional: Usage When Deployment   
   secret: process.env.NEXTAUTH_SECRET,
   
   // Optional
@@ -37,19 +39,22 @@ export const authOption = {
     strategy: "jwt", // Adjust this based on your session strategy
   },
   
-  // Custom Login page
-     // pages: {
-    //   signIn: "/login",
-    // },
+ 
   callbacks: {
     async jwt({ token, user }) {
-      return { ...token, ...user };
+      // This is where the JWT token is created or updated
+      if (user) {
+        return { ...token, ...user }; // Add user data to the token
+      }
+      return token;
     },
     async session({ session, token }) {
-      session.user = token;
+      // This is where the session is populated with JWT data
+      session.user = token; // Attach the token data to the session object
       return session;
     },
-  },
+  }
+  
 };
 const handler = NextAuth(authOption);
 

@@ -35,6 +35,24 @@ export default function LoginComponent() {
       setIsLoading(false); // Stop loading
     }
   };
+  const handleGoogleLogin = async () => {
+    setIsLoading(true);
+    try {
+      const res = await signIn("google", { redirect: false });
+      if (res?.ok) {
+        router.push("/todopage");
+      } else {
+        console.error("Google login response:", res); // Log response for debugging
+        alert("Google login failed. Please try again.");
+      }
+    } catch (error) {
+      console.error("Google login error:", error); // Log the error for debugging
+      alert("An error occurred during Google login.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
 
   return (
     <form className="space-y-6 bg-white" onSubmit={handleSubmit(onSubmit)}>
@@ -101,9 +119,13 @@ export default function LoginComponent() {
         </div>
       </div>
 
-      {/* Sign In with Google */}
-      <div className="bg-ghost-white rounded-lg text-center">
-        <Button className="flex gap-2 items-start justify-center w-full bg-ghost-white text-charcoal shadow-none hover:bg-ghost-white/50">
+     {/* Google Sign-In Button */}
+     <div className="bg-ghost-white rounded-lg text-center">
+        <Button
+          type="button"
+          onClick={handleGoogleLogin} // Handle Google login
+          className="flex gap-2 items-start justify-center w-full bg-ghost-white text-charcoal shadow-none hover:bg-ghost-white/50 cursor-pointer"
+        >
           <img src="/Google Icon.svg" alt="google icon" /> Login with Google
         </Button>
       </div>

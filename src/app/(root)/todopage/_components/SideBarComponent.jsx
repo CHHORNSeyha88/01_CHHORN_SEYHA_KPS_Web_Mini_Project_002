@@ -1,7 +1,10 @@
 // app/sidebar/SideBarComponent.js
 import { getAllWorkSpaces } from "@/service/workspace/getallworkspace.service";
-import { Ellipsis, FolderHeart, FolderPlus, LogOut } from "lucide-react";
+import { Ellipsis, FolderHeart, FolderPlus } from "lucide-react";
 import Link from "next/link";
+import SignOutComponent from "./SignOutComponent";
+import AddNewWorkSpaceComponent from "./AddNewWorkSpaceComponent";
+import { Button } from "@/components/ui/button";
 
 const SideBarComponent = async () => {
   const data = await getAllWorkSpaces();
@@ -16,6 +19,7 @@ const SideBarComponent = async () => {
     return color;
   }
 
+  
   const favoriteWorkspaces = worSpace.filter((workspace) => workspace.isFavorite);
 
   return (
@@ -23,11 +27,8 @@ const SideBarComponent = async () => {
       <main className="flex justify-between px-5 py-4 items-center">
         <h2 className="text-[#94A3B8] text-2xl font-bold">WorkSpace</h2>
         {/* Add query parameter to show modal */}
-        <Link href="?createWorkspace=true" shallow>
-          <FolderPlus size={30} />
-        </Link>
+       <AddNewWorkSpaceComponent/>
       </main>
-
       <ul>
         {worSpace.map((Workspace) => (
           <li key={Workspace.workspaceId} className="px-5 py-4 text-gray-900 text-center text-[20px] font-bold hover:bg-[#F8FAFC] cursor-pointer flex justify-between items-center">
@@ -65,10 +66,7 @@ const SideBarComponent = async () => {
 
       {/* Logout Button */}
       <div className="border-t border-gray-200 px-5 py-4 bg-white">
-        <Link className="flex items-center gap-x-5 justify-start w-full p-2" href="/logout">
-          <LogOut size={25} className="text-[#009990] font-bold" />
-          <span className="text-[#009990] font-bold">Logout</span>
-        </Link>
+        <SignOutComponent/>
       </div>
     </div>
   );
