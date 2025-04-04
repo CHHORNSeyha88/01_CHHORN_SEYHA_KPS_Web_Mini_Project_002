@@ -24,7 +24,7 @@ const SideBarComponent = async () => {
 
   return (
     <div className="h-[100vh] shadow-xl sticky top-0">
-      <main className="flex justify-between px-5 py-4 items-center">
+      <main className="flex justify-between px-10 py-4 items-center">
         <h2 className="text-[#94A3B8] text-2xl font-bold">WorkSpace</h2>
         {/* Add query parameter to show modal */}
        <AddNewWorkSpaceComponent/>
